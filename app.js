@@ -5,8 +5,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const scenariosRoutes = require('./api/routes/scenarios');
-const characterRoutes = require('./api/routes/characters');
-
+const charactersRoutes = require('./api/routes/characters');
+const sessionsRoutes = require('./api/routes/sessions');
 mongoose.connect('mongodb+srv://MongoIEUSR:'+process.env.MONGO_ATLAS_PW+'@ieproject-qruv7.mongodb.net/test?retryWrites=true',
 {
     useNewUrlParser:true
@@ -28,7 +28,8 @@ app.use((req,res,next) => {
 });
 
 app.use('/scenarios',scenariosRoutes);
-app.use('/characters',characterRoutes);
+app.use('/characters',charactersRoutes);
+app.use('/sessions',sessionsRoutes);
 
 app.use((req,res,next)=>{
     const error = new Error('Not found');

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const scenarioSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    title: String,
+    title: {type : String, required: true},
     dificultyLevel: Number
 });
 
