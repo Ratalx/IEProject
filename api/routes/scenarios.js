@@ -1,12 +1,37 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const multer = require('multer');
 
+const storage = multer.diskStorage({
+    destination: function(req,file,cb){
+        cb(null,'./uploads/');
+    },
+    filename: function(req,file,cb){
+        cb(null,new Date().toISOString() + file.originalname)
+    }
+})
+
+const fileFilter = (req,file,cb)=>{
+    if(file.mimetype === 'image/jpeg'|| file.mimetype ==='image/png')
+    {
+    cb(null,true);    
+    }
+    else{
+    cb(new Error('Wronge image type'),false);
+    }
+}
+
+const upload = multer(
+    {
+    storage: storage,
+    fileFilter: fileFilter
+});
 const Scenario = require('../models/scenario');
 
 router.get('/',(req,res,next)=>{
     Scenario.find()
-    .select('title dificultyLevel _id')
+    .select('title dificultyLevel _id scenarioImage')
     .exec()
     .then(docs => {
         const response ={
@@ -16,6 +41,7 @@ router.get('/',(req,res,next)=>{
                         title:doc.title,
                         dificultyLevel: doc.dificultyLevel,
                         _id: doc._id,
+                        scenarioImage: doc.scenarioImage,
                         request: {
                             type:"GET",
                             url:"http://localhost:3000/scenarios/"+ doc._id
@@ -35,11 +61,13 @@ router.get('/',(req,res,next)=>{
 
 });
 
-router.post('/',(req,res,next)=>{
+router.post("/",upload.single('scenarioImage'),(req,res,next)=>{
+    console.log(req.file);
     const scenario = new Scenario({
         _id: new mongoose.Types.ObjectId(),
         title: req.body.title,
-        dificultyLevel : req.body.dificultyLevel
+        dificultyLevel : req.body.dificultyLevel,
+        scenarioImage: req.file.path
     });
 
     scenario.save()

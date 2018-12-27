@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
+
 const scenariosRoutes = require('./api/routes/scenarios');
 const charactersRoutes = require('./api/routes/characters');
 const sessionsRoutes = require('./api/routes/sessions');
@@ -13,6 +14,7 @@ mongoose.connect('mongodb+srv://MongoIEUSR:'+process.env.MONGO_ATLAS_PW+'@ieproj
 })
 
 app.use(morgan('dev'));
+app.use('/uploads',express.static('uploads'));
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
