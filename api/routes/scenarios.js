@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 const checkAuth = require('../middleware/check-auth');
 
-const ScenarioController= require('../controllers/scenarios');
 
 const storage = multer.diskStorage({
     destination: function(req,file,cb){
@@ -32,7 +31,37 @@ const upload = multer(
 });
 const Scenario = require('../models/scenario');
 
-router.get('/',ScenarioController.scenariosGetAll);
+router.get('/',(req,res,next)=>{
+    Scenario.find()
+    .select('title dificultyLevel _id scenarioImage')
+    .exec()
+    .then(docs => {
+        const response ={
+            count: docs.length,
+            scenarios: docs.map(doc=> {
+                    return {
+                        title:doc.title,
+                        dificultyLevel: doc.dificultyLevel,
+                        _id: doc._id,
+                        scenarioImage: doc.scenarioImage,
+                        request: {
+                            type:"GET",
+                            url:"http://localhost:3000/scenarios/"+ doc._id
+                        }
+                    }
+                })
+        }
+        res.status(200).json(response);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json(
+            {
+            error:err
+        });
+    });
+
+});
 
 router.post("/",checkAuth,upload.single('scenarioImage'),(req,res,next)=>{
     console.log(req.file);
