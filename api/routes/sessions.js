@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const checkAuth = require('../middleware/check-auth')
 
 const Session = require('../models/session');
 const Character = require('../models/character');
 const Scenario = require('../models/scenario');
 
-router.get('/',(req,res,next)=> {
+router.get('/',checkAuth,(req,res,next)=> {
     Session.find()
     .select('_id playerCharacter scenario')
     .populate('scenario','_id title')
@@ -47,7 +48,7 @@ router.get('/',(req,res,next)=> {
     })
 });
 
-router.post('/',(req,res,next)=> {
+router.post('/',checkAuth,(req,res,next)=> {
 
     Character.findById(req.body.characterId)
     .exec()
@@ -111,7 +112,7 @@ router.post('/',(req,res,next)=> {
     });
 });
 
-router.get('/:sessionId',(req,res,next)=> {
+router.get('/:sessionId',checkAuth,(req,res,next)=> {
    Session.findById(req.body.sessionId)
    .select('_id playerCharacter scenario')
    .populate('scenario','_id title ')
@@ -140,7 +141,7 @@ router.get('/:sessionId',(req,res,next)=> {
    });
 });
 
-router.delete('/:sessionId',(req,res,next)=> {
+router.delete('/:sessionId',checkAuth,(req,res,next)=> {
    Session.deleteOne({_id : req.params.sessionId})
    .exec()
    .then(result=>{

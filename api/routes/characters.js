@@ -2,10 +2,10 @@ const express = require('express');
 
 const router = express.Router();
 const mongoose = require('mongoose');
-
+const checkAuth = require('../middleware/check-auth')
 const Character=require('../models/character');
 
-router.get('/',(req,res,next)=>{
+router.get('/',checkAuth,(req,res,next)=>{
     Character.find()
     .select('name level class _id')
     .exec()
@@ -35,7 +35,7 @@ router.get('/',(req,res,next)=>{
     });
 });
 
-router.post('/',(req,res,next)=> {
+router.post('/',checkAuth,(req,res,next)=> {
     const character = new Character({
         _id: new mongoose.Types.ObjectId(),
         name:req.body.name,
@@ -65,7 +65,7 @@ router.post('/',(req,res,next)=> {
     });
 });
 
-router.get('/:characterId',(req,res,next)=> {
+router.get('/:characterId',checkAuth,(req,res,next)=> {
     const id = req.params.characterId;
     Character.findById(id)
     .select('name level _id class')
@@ -96,7 +96,7 @@ router.get('/:characterId',(req,res,next)=> {
     });
 });
 
-router.patch('/:characterId',(req,res,next)=>{
+router.patch('/:characterId',checkAuth,(req,res,next)=>{
     const id = req.params.characterId;
     const updateOps={};
     for(const ops of req.body)
@@ -122,7 +122,7 @@ router.patch('/:characterId',(req,res,next)=>{
     })
 })
 
-router.delete('/:characterId',(req,res,next)=> {
+router.delete('/:characterId',checkAuth,(req,res,next)=> {
     const id = req.params.characterId;
     Character.deleteOne({_id: id})
     .exec()
