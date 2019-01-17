@@ -9,9 +9,16 @@ const scenariosRoutes = require('./api/routes/scenarios');
 const charactersRoutes = require('./api/routes/characters');
 const sessionsRoutes = require('./api/routes/sessions');
 const userRoutes = require('./api/routes/user');
-mongoose.connect('mongodb+srv://MongoIEUSR:'+process.env.MONGO_ATLAS_PW+'@ieproject-qruv7.mongodb.net/test?retryWrites=true',
+
+mongoose.connect('mongodb://mongo:37001/IEProjekt',
+// mongoose.connect('mongodb+srv://MongoIEUSR:'+process.env.MONGO_ATLAS_PW+'@ieproject-qruv7.mongodb.net/test?retryWrites=true',
 {
-    useNewUrlParser:true
+    useNewUrlParser:true,
+
+}).then(result=>{
+    console.log("server connected")
+}).catch(err=>{
+    console.log(err);
 })
 
 app.use(morgan('dev'));
