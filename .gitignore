@@ -61,3 +61,4 @@ typings/
 .next
 # nodemon envs
 nodemon.json
+uploads

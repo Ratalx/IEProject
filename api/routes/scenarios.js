@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const multer = require('multer');
 const checkAuth = require('../middleware/check-auth');
+const checkSuperAuth = require('../middleware/check-superAuth');
 
 
 const storage = multer.diskStorage({
@@ -166,7 +167,7 @@ router.patch('/:scenarioId',checkAuth,(req,res,next)=>{
     });
 });
 
-router.delete('/:scenarioId',checkAuth,(req,res,next)=>{
+router.delete('/:scenarioId',checkSuperAuth,(req,res,next)=>{
     const id= req.params.scenarioId;
     Scenario.deleteOne({_id: id})
     .exec()

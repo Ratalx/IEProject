@@ -9,8 +9,9 @@ const scenariosRoutes = require('./api/routes/scenarios');
 const charactersRoutes = require('./api/routes/characters');
 const sessionsRoutes = require('./api/routes/sessions');
 const userRoutes = require('./api/routes/user');
+const superUserRoutes=require('./api/routes/superUser');
 
-mongoose.connect('mongodb://mongo:37001/IEProjekt',
+mongoose.connect('mongodb://0.0.0.0:27017/IEProjekt',
 // mongoose.connect('mongodb+srv://MongoIEUSR:'+process.env.MONGO_ATLAS_PW+'@ieproject-qruv7.mongodb.net/test?retryWrites=true',
 {
     useNewUrlParser:true,
@@ -41,6 +42,7 @@ app.use('/scenarios',scenariosRoutes);
 app.use('/characters',charactersRoutes);
 app.use('/sessions',sessionsRoutes);
 app.use('/user',userRoutes);
+app.use('/superUser',superUserRoutes);
 
 app.use((req,res,next)=>{
     const error = new Error('Not found');
