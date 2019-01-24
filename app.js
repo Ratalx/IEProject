@@ -11,7 +11,7 @@ const sessionsRoutes = require('./api/routes/sessions');
 const userRoutes = require('./api/routes/user');
 const superUserRoutes=require('./api/routes/superUser');
 
-mongoose.connect('mongodb://mongo:37001/IEProjekt',
+mongoose.connect('mongodb://mongo:27017/IEProjekt',
 // mongoose.connect('mongodb+srv://MongoIEUSR:'+process.env.MONGO_ATLAS_PW+'@ieproject-qruv7.mongodb.net/test?retryWrites=true',
 {
     useNewUrlParser:true,
